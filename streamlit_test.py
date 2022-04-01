@@ -137,6 +137,6 @@ def display_pca_scatterplot_3D(model=model_wikipedia50, user_input=None, words=N
 
 
     plot_figure = go.Figure(data = data, layout = layout)
-    plot_figure.show()
+    st.plotly_chart(plot_figure)
     
 display_pca_scatterplot_3D(model_wikipedia50, user_input, similar_word, labels, color_map)
