@@ -4,7 +4,7 @@ import numpy as np
 
 import gensim.downloader as api
 
-st.title('Word Embeddings')
+st.title('Vizualizing Word Embeddings')
 
 model_wikipedia50 = api.load("glove-wiki-gigaword-50")
 
