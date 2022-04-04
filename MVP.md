@@ -5,7 +5,7 @@ The MVP is a [deployed Streamlit app](https://share.streamlit.io/katereiss/visua
 Additions will include the following:
 - Error message if a word is not in the vocabulary
 - Using TensorBoard UI instead of Plotly 
-- Slider that allows the user to choose the nearest 5-50 words
+- Add other models, allow user to choose model
 - Improve speed
 
 
