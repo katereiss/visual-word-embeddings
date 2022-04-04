@@ -6,6 +6,7 @@ Additions will include the following:
 - Error message if a word is not in the vocabulary
 - Using TensorBoard UI instead of Plotly 
 - Slider that allows the user to choose the nearest 5-50 words
+- Improve speed
 
 
 
