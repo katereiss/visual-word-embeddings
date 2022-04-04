@@ -19,17 +19,19 @@ st.write('What Are Word Embeddings?')
 
 st.write('Word embeddings are vector representations of words. Words with similar meanings are closer together in vector space.')
 
-st.write('Search for any word below and the graph will show the word embeddings of the ten most similar words!')
+st.write('Search for any word below and the graph will show the word embeddings of the most similar words!')
 
 title = st.text_input('Word', 'dog')
 st.write('Selected Word: ', title)
 
-word_list = [model_wikipedia50.most_similar(f'{title}')[i][0] for i in range(10)]
+num = st.slider('Select number of similar words:', 5, 50, 10)
+
+word_list = [model_wikipedia50.most_similar(f'{title}', topn=num)[i][0] for i in range(num)]
 words = str(word_list).replace("'","")
 words = words.strip("[]")
 
 # closest_words = [model_wikipedia50.most_similar(f'{title}')[i][0] for i in range(10)]
-st.write('Most Similar Words:', words)
+st.write(num, 'Most Similar Words:', words)
 
 
 #create interactive 3d graph of word embeddings
