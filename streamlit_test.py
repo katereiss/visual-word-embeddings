@@ -15,6 +15,14 @@ data = model_wikipedia50
 # Notify the reader that the data was successfully loaded.
 data_load_state.text('Loading data...done!')
 
+st.write('Word embeddings are words represented as vectors so that computers can read them and understand their meaning compared to other words.')
+
+st.write('Search any word and the graph below will show the 10 nearest words by cosine similarity.')
+
+title = st.text_input('Word', 'Dog')
+st.write('Selected Word: ', title)
+
+
 #create interactive 3d graph of word embeddings
 
 def append_list(sim_words, words):
@@ -30,7 +38,7 @@ def append_list(sim_words, words):
         
     return list_of_words
 
-input_word = 'dog,cat,mouse'
+input_word = title
 user_input = [x.strip() for x in input_word.split(',')]
 result_word = []
     
