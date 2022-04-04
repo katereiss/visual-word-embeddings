@@ -15,12 +15,17 @@ data = model_wikipedia50
 # Notify the reader that the data was successfully loaded.
 data_load_state.text('Loading data...done!')
 
-st.write('Word embeddings are words represented as vectors so that computers can read them and understand their meaning compared to other words.')
+st.write('What Are Word Embeddings?')
 
-st.write('Search any word and the graph below will show the 10 nearest words by cosine similarity.')
+st.write('Word embeddings are vector representations of words. Words with similar meanings are closer together in vector space. Computers can better understand meanings of words when they are represented as vectors.')
 
-title = st.text_input('Word', 'Dog')
+st.write('Search for any word and the graph below will show the word embedding.')
+
+title = st.text_input('Word', 'dog')
 st.write('Selected Word: ', title)
+
+closest_words = model_wikipedia50.most_similar(f'{title}')
+st.write('Most Similar Words:', closest_words)
 
 
 #create interactive 3d graph of word embeddings
@@ -38,7 +43,7 @@ def append_list(sim_words, words):
         
     return list_of_words
 
-input_word = title
+input_word = title.lower()
 user_input = [x.strip() for x in input_word.split(',')]
 result_word = []
     
@@ -126,7 +131,7 @@ def display_pca_scatterplot_3D(model=model_wikipedia50, user_input=None, words=N
 
     layout = go.Layout(
         margin = {'l': 0, 'r': 0, 'b': 0, 't': 0},
-        showlegend=True,
+        showlegend=False,
         legend=dict(     
         x=1,
         y=0.5,
