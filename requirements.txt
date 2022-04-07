@@ -5,4 +5,3 @@ scikit-learn==1.0.2
 plotly==5.6.0
 tenacity==8.0.1
 six==1.16.0
-tk==8.6.11
