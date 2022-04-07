@@ -1,41 +1,44 @@
+from turtle import onclick
 import streamlit as st
 import pandas as pd
 import numpy as np
 
 import gensim.downloader as api
+from gensim.models import KeyedVectors, Word2Vec
+
+import plotly.graph_objs as go
+from sklearn.decomposition import PCA
 
 st.title('Visualizing Word Embeddings')
 
 model_wikipedia50 = api.load("glove-wiki-gigaword-50")
+# model_twitter25 = api.load("glove-twitter-25")
+
+# st.selectbox('Select', ['GloVe Wikipedia 50 dimensions','GloVe Twitter 25 dimensions'])
 
 # Create a text element and let the reader know the data is loading.
-data_load_state = st.text('Loading data...')
+# data_load_state = st.text('Loading data...')
 # Load pre-trained embeddings
 data = model_wikipedia50
 # Notify the reader that the data was successfully loaded.
-data_load_state.text('Loading data...done!')
+# data_load_state.text('Loading data...done!')
 
-st.write('What Are Word Embeddings?')
+st.header('What Are Word Embeddings?')
 
 st.write('Word embeddings are vector representations of words. Words with similar meanings are closer together in vector space.')
 
 st.write('Search for any word below and the graph will show the word embeddings of the most similar words!')
 
-title = st.text_input('Word', 'dog')
+title = st.text_input('Word (Examples: "archaeologists", "baseball", "Google", "2006", "meningococcus", "Ushuaia")', 'dog').lower()
+
+if st.button('Random Word'):
+    title = model_wikipedia50.index_to_key[np.random.randint(0,399999)]
+
 st.write('Selected Word: ', title)
 
 num = st.slider('Select number of similar words:', 5, 50, 10)
 
-word_list = [model_wikipedia50.most_similar(f'{title}', topn=num)[i][0] for i in range(num)]
-words = str(word_list).replace("'","")
-words = words.strip("[]")
-
-# closest_words = [model_wikipedia50.most_similar(f'{title}')[i][0] for i in range(10)]
-st.write(num, 'Most Similar Words:', words)
-
-
-#create interactive 3d graph of word embeddings
-
+@st.cache
 def append_list(sim_words, words):
     
     list_of_words = []
@@ -49,28 +52,37 @@ def append_list(sim_words, words):
         
     return list_of_words
 
-input_word = title.lower() + ',' + words
-user_input = [x.strip() for x in input_word.split(',')]
-result_word = []
-    
-for words in user_input:
-    
-        sim_words = model_wikipedia50.most_similar(words, topn = 0)
-        sim_words = append_list(sim_words, words)
-            
-        result_word.extend(sim_words)
-    
-similar_word = [word[0] for word in result_word]
-similarity = [word[1] for word in result_word] 
-similar_word.extend(user_input)
-labels = [word[2] for word in result_word]
-label_dict = dict([(y,x+1) for x,y in enumerate(set(labels))])
-color_map = [label_dict[x] for x in labels]
+try: 
+    word_list = [model_wikipedia50.most_similar(f'{title}', topn=num)[i][0] for i in range(num)]
+    words = str(word_list).replace("'","")
+    words = words.strip("[]")
+    data=[model_wikipedia50.most_similar(f'{title}', topn=num)[i] for i in range(num)]
+    df = pd.DataFrame(data=data, columns= ['Word','Cosine Similarity'])
+    df.index +=1
 
+    input_word = title.lower() + ',' + words
+    user_input = [x.strip() for x in input_word.split(',')]
+    result_word = []
 
-import plotly.graph_objs as go
-from sklearn.decomposition import PCA
+    
+    for words in user_input:
+        
+            sim_words = model_wikipedia50.most_similar(words, topn = 0)
+            sim_words = append_list(sim_words, words)
+                
+            result_word.extend(sim_words)
+        
+    similar_word = [word[0] for word in result_word]
+    similarity = [word[1] for word in result_word] 
+    similar_word.extend(user_input)
+    labels = [word[2] for word in result_word]
+    label_dict = dict([(y,x+1) for x,y in enumerate(set(labels))])
+    color_map = [label_dict[x] for x in labels]
 
+except KeyError:
+    st.write('Sorry! \"',title,"\" not in vocabulary." )
+    
+@st.cache
 def display_pca_scatterplot_3D(model=model_wikipedia50, user_input=None, words=None, label=None, color_map=None, topn=5, sample=10):
 
     if words == None:
@@ -80,6 +92,7 @@ def display_pca_scatterplot_3D(model=model_wikipedia50, user_input=None, words=N
             words = [ word for word in model.vocab ]
     
     word_vectors = np.array([model[w] for w in words])
+    
     
     three_dim = PCA(random_state=0).fit_transform(word_vectors)[:,:3]
     # For 2D, change the three_dim variable into something like two_dim like the following:
@@ -135,6 +148,7 @@ def display_pca_scatterplot_3D(model=model_wikipedia50, user_input=None, words=N
     
 # Configure the layout
 
+
     layout = go.Layout(
         margin = {'l': 0, 'r': 0, 'b': 0, 't': 0},
         showlegend=False,
@@ -150,12 +164,23 @@ def display_pca_scatterplot_3D(model=model_wikipedia50, user_input=None, words=N
             family = " Courier New ",
             size = 15),
         autosize = False,
-        width = 1000,
-        height = 1000
+        width = 700,
+        height = 700
         )
 
+
+    
 
     plot_figure = go.Figure(data = data, layout = layout)
     st.plotly_chart(plot_figure)
     
-display_pca_scatterplot_3D(model_wikipedia50, user_input, similar_word, labels, color_map)
+try: display_pca_scatterplot_3D(model_wikipedia50, user_input, similar_word, labels, color_map)
+except NameError:
+    pass
+
+try: 
+    st.write(num, 'Most Similar Words:')
+    st.table(df)
+except NameError:
+    pass
+
