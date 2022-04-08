@@ -9,16 +9,14 @@ from gensim.models import KeyedVectors, Word2Vec
 import plotly.graph_objs as go
 from sklearn.decomposition import PCA
 
+
 st.title('Visualizing Word Embeddings')
 
 model_wikipedia50 = api.load("glove-wiki-gigaword-50")
-
 data = model_wikipedia50
 
 st.header('What Are Word Embeddings?')
-
 st.write('Word embeddings are vector representations of words. Words with similar meanings are closer together in vector space.')
-
 st.write('Search for any word below and the graph will show the word embeddings of the most similar words!')
 
 title = st.text_input('Word (Examples: "archaeologists", "baseball", "Google", "2006", "meningococcus", "Ushuaia")', 'dog').lower()
