@@ -12,16 +12,8 @@ from sklearn.decomposition import PCA
 st.title('Visualizing Word Embeddings')
 
 model_wikipedia50 = api.load("glove-wiki-gigaword-50")
-# model_twitter25 = api.load("glove-twitter-25")
 
-# st.selectbox('Select', ['GloVe Wikipedia 50 dimensions','GloVe Twitter 25 dimensions'])
-
-# Create a text element and let the reader know the data is loading.
-# data_load_state = st.text('Loading data...')
-# Load pre-trained embeddings
 data = model_wikipedia50
-# Notify the reader that the data was successfully loaded.
-# data_load_state.text('Loading data...done!')
 
 st.header('What Are Word Embeddings?')
 
@@ -95,8 +87,6 @@ def display_pca_scatterplot_3D(model=model_wikipedia50, user_input=None, words=N
     
     
     three_dim = PCA(random_state=0).fit_transform(word_vectors)[:,:3]
-    # For 2D, change the three_dim variable into something like two_dim like the following:
-    # two_dim = PCA(random_state=0).fit_transform(word_vectors)[:,:2]
 
     data = []
     count = 0
@@ -119,9 +109,7 @@ def display_pca_scatterplot_3D(model=model_wikipedia50, user_input=None, words=N
 
                 )
                 
-        # For 2D, instead of using go.Scatter3d, we need to use go.Scatter and delete the z variable. Also, instead of using
-        # variable three_dim, use the variable that we have declared earlier (e.g two_dim)
-
+        
         data.append(trace)
         count = count+topn
 
@@ -141,14 +129,9 @@ def display_pca_scatterplot_3D(model=model_wikipedia50, user_input=None, words=N
                     }
                     )
 
-    # For 2D, instead of using go.Scatter3d, we need to use go.Scatter and delete the z variable.  Also, instead of using
-    # variable three_dim, use the variable that we have declared earlier (e.g two_dim)
-            
+    
     data.append(trace_input)
     
-# Configure the layout
-
-
     layout = go.Layout(
         margin = {'l': 0, 'r': 0, 'b': 0, 't': 0},
         showlegend=False,
@@ -168,8 +151,6 @@ def display_pca_scatterplot_3D(model=model_wikipedia50, user_input=None, words=N
         height = 700
         )
 
-
-    
 
     plot_figure = go.Figure(data = data, layout = layout)
     st.plotly_chart(plot_figure)
