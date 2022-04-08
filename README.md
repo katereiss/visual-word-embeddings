@@ -18,7 +18,7 @@ Caching was used in hopes of reducing the time it took for the application to lo
 
 **Tools**
 
-— Streamlit for app deployment
+- Streamlit for app deployment
 - Plotly for 3D visualization
 - Gensim for data acquisition
 - Scikit-learn for PCA
