@@ -1,8 +1,8 @@
 # Visualizing Word Embeddings
 
-In a previous [project](https://github.com/katereiss/nlp-word-embeddings), I compared word embeddings between models trained on a Wikipedia corpus and a Twitter corpus. The same words had different vectors associated with them, different words closest to them in vector space, and different semantic meanings. One problem I ran into during this project was the curse of dimensionality: reducing 200-dimensional vectors down to 2 or 3 meant losing important information and patterns. Many of the visualizations of these embeddings looked like random dots in space, with no visible pattern.
+In a previous [project](https://github.com/katereiss/nlp-word-embeddings), I compared word embeddings between models trained on a Wikipedia corpus and a Twitter corpus. The same words had different vectors associated with them, different words closest to them in vector space, and different semantic meanings. One problem I encountered during this project was the curse of dimensionality: reducing 200-dimensional vectors down to 2 or 3 meant losing important information and patterns. Many of the visualizations of these embeddings looked like random dots in space, with no visible pattern.
 
-I had two goals in mind when I created this app. I wanted to let users interact with word embeddings and machine-learned vocabulary by being able to input their own words. I also wanted to see if certain words had specific patterns in vector space. 
+I had two goals in mind when I created this app. I wanted to let users interact with word embeddings and machine-learned vocabulary by being able to input their own words. I also wanted to see if certain words had specific patterns in vector space.
 
 **Design**
 
