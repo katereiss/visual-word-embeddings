@@ -1,4 +1,3 @@
-# from turtle import onclick
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -28,7 +27,6 @@ st.write('Selected Word: ', title)
 
 num = st.slider('Select number of similar words:', 5, 50, 10)
 
-# @st.cache
 def append_list(sim_words, words):
     
     list_of_words = []
@@ -72,7 +70,6 @@ try:
 except KeyError:
     st.write('Sorry! \"',title,"\" not in vocabulary." )
     
-# @st.cache(suppress_st_warning=True)
 def display_pca_scatterplot_3D(model=model_wikipedia50, user_input=None, words=None, label=None, color_map=None, topn=5, sample=10):
 
     if words == None:
@@ -82,7 +79,6 @@ def display_pca_scatterplot_3D(model=model_wikipedia50, user_input=None, words=N
             words = [ word for word in model.vocab ]
     
     word_vectors = np.array([model[w] for w in words])
-    
     
     three_dim = PCA(random_state=0).fit_transform(word_vectors)[:,:3]
 
@@ -106,7 +102,6 @@ def display_pca_scatterplot_3D(model=model_wikipedia50, user_input=None, words=N
         }
 
                 )
-                
         
         data.append(trace)
         count = count+topn
